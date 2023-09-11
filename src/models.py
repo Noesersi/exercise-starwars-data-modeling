@@ -12,6 +12,7 @@ class User(Base):
     id = Column(Integer, primary_key=True)
     username = Column(String(250), nullable=False)
     password = Column(String(250), nullable=False)
+    favorites = relationship('Favorite', backref='user')
     
 
 class Planet(Base):
@@ -21,6 +22,7 @@ class Planet(Base):
     climate = Column(String(250), nullable=False)
     population = Column(String(250), nullable=False)
     diameter = Column(String(250), nullable=False)
+    favorites = relationship('Favorite', backref='planet')
 
 
 class Person(Base):
@@ -30,6 +32,7 @@ class Person(Base):
     hair_color=Column(String(250), nullable=True)
     gender=Column(String(250), nullable=True)
     birth_year=Column(String(250), nullable=False)
+    favorites = relationship('Favorite', backref='person')
 
 
 class Starship(Base):
@@ -39,6 +42,7 @@ class Starship(Base):
     model = Column(String(250), nullable=False)
     passengers = Column(String(250), nullable=False)
     max_atmosphering_speed = Column(String(250), nullable=False)
+    favorites = relationship('Favorite', backref='starship')
 
 
     
@@ -49,6 +53,10 @@ class Favorite(Base):
     favoriteStarshipId = Column(Integer, ForeignKey('starship.id'), nullable=True)
     favoritePersonId = Column(Integer, ForeignKey('person.id'), nullable=True)
     favoritePlanetId = Column(Integer, ForeignKey('planet.id'), nullable=True)
+    user = relationship('User', backref='favorites')
+    starship = relationship('Starship', backref='favorites')
+    person = relationship('Person', backref='favorites')
+    planet = relationship('Planet', backref='favorites')
 
 
     def to_dict(self):
